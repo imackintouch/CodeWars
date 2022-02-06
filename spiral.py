@@ -1,4 +1,9 @@
 import sys
+# ToDo: 1) remove the need to adjust x and y return values before returning them
+# ToDo: 2) Eliminate the need for the global: value
+# ToDo: 3) Eliminate the need for the global: fill_count
+# ToDo: 4) Have the matrix display function display numbers in a well formatted fashion
+# ToDo: 5) Research to see if the up, down, right and left functions can be collapsed.
 
 def spiral(n):
     global value
