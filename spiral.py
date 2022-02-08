@@ -1,6 +1,7 @@
-import sys
+
 # ToDo: 1) Research to see if the up, down, right and left functions can be collapsed.
-# ToDo: 2) See if we can create a matrix class that will have global representations for value and count
+# ToDo: 2) See if we can create a matrix class that will have global representations for value, fillcount etc.
+# ToDo: 3) See if x and y co-ordinates can be represented as a data class.
 
 
 def spiral(n):
@@ -8,75 +9,56 @@ def spiral(n):
     def init_matrix(x):
         return [[0 for i in range(x)] for i in range(x)]
 
-    def right(matrix, x, y, limit, value, count):
+    def traverse_spiral(matrix, x, y, direction, limit, value, count):
         """
-        :param matrix:
-        :param x: row
-        :param y: col
-        :param limit: limit - 1 will be the last column to fill
-        :param value: initial value to fill in
-        :param count: current fill count
-        :return: # location of most recently filled cell, last value and number of cells filled so far
+        :param matrix: 2D array
+        :param x: starting row value
+        :param y: starting column value
+        :param direction: current direction of numeric clockwise spiral
+        :param limit: value of row or col to not go past
+        :param value: starting value to fill into a spiral cell
+        :param count: counter for how many cells filled so far
+        :return:
         """
-        while y < limit:
-            matrix[x][y] = value
-            value += 1
-            count += 1
-            y += 1
-        return x, y-1, value, count
+        i = 0
+        dirmap = {'right': 1, 'down': 1, 'left': -1, 'up': -1}
+        accumulator = dirmap[direction]
+        if direction in ('right', 'left'):
+            i = y
+        elif direction in ('down', 'up'):
+            i = x
 
-    def left(matrix, x, y, limit, value, count):
-        while y > limit:
-            matrix[x][y] = value
-            value += 1
-            count += 1
-            y -= 1
-        return x, y+1, value, count
+        while i != limit:
+            if direction in ('right', 'left'):
+                matrix[x][i] = value
+                y = i
 
-    def down(matrix, x, y, limit, value, count):
-        while x < limit:
-            matrix[x][y] = value
-            value += 1
-            count += 1
-            x += 1
-        return x-1, y, value, count
+            elif direction in ('down', 'up'):
+                matrix[i][y] = value
+                x = i
 
-    def up(matrix, x, y, limit, value, count):
-        while x > limit:
-            matrix[x][y] = value
             value += 1
             count += 1
-            x -= 1
-        return x+1, y, value, count
+            i = i + accumulator
+        print(f"After {direction}: x={x}, y={y}")
+        print(f"my matrix state is currently: {matrix} count={count}")
+        return x, y, value, count
 
     x_ord, y_ord = 0, 0
     array = init_matrix(n)
     print(f"After init: x_ord={x_ord}, y_ord={y_ord}")
     print(f"my matrix state is currently: {array}")
     val = 1
-    fillcount = 0
+    counter = 0
     left_limit, right_limit = -1, n
     top_limit, bottom_limit = 0, n
 
-    while fillcount < n*n:
-        x_ord, y_ord, val, fillcount = right(array, x_ord, y_ord, right_limit, val, fillcount)
-        print(f"After right: x_ord={x_ord}, y_ord={y_ord}")
-        print(f"my matrix state is currently: {array} fillcount={fillcount}")
-        # sys.exit(0)
-        x_ord, y_ord, val, fillcount = down(array, x_ord+1, y_ord, bottom_limit, val, fillcount)
-        print(f"After down: x_ord={x_ord}, y_ord={y_ord}")
-        print(f"my matrix state is currently: {array} fillcount={fillcount}")
-        # sys.exit(0)
-        x_ord, y_ord, val, fillcount = left(array, x_ord, y_ord-1, left_limit, val, fillcount)
-        print(f"After left: x_ord={x_ord}, y_ord={y_ord}")
-        print(f"my matrix state is currently: {array} fillcount={fillcount}")
-        # sys.exit(0)
-        x_ord, y_ord, val, fillcount = up(array, x_ord-1, y_ord, top_limit, val, fillcount)
-        print(f"After up: x_ord={x_ord}, y_ord={y_ord}")
-        print(f"my matrix state is currently: {array} fillcount={fillcount}")
-        # sys.exit(0)
+    while counter < n*n:
+        x_ord, y_ord, val, counter = traverse_spiral(array, x_ord, y_ord, 'right', right_limit, val, counter)
+        x_ord, y_ord, val, counter = traverse_spiral(array, x_ord+1, y_ord, 'down', bottom_limit, val, counter)
+        x_ord, y_ord, val, counter = traverse_spiral(array, x_ord, y_ord-1, 'left', left_limit, val, counter)
+        x_ord, y_ord, val, counter = traverse_spiral(array, x_ord-1, y_ord, 'up', top_limit, val, counter)
 
-        # x_ord += 1
         y_ord += 1
         right_limit -= 1
         bottom_limit -= 1
@@ -99,8 +81,10 @@ def display(matrix):
                     print()
 
 
-spiral_matrix = spiral(5)
-display(spiral_matrix)
-# sys.exit(0)
-# spiral_matrix = spiral(1)
-# display(spiral_matrix)
+def main():
+    spiral_matrix = spiral(5)
+    display(spiral_matrix)
+
+
+if __name__ == '__main__':
+    main()
