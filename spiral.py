@@ -21,6 +21,9 @@ def spiral(n):
         def get_filled_count(self):
             return self.filled_count
 
+        def get_value(self):
+            return self.value
+
         def get_dirmap(self):
             return self.dirmap
 
@@ -58,11 +61,11 @@ def spiral(n):
             matrix_obj.inc_value()
 
             if direction in ('right', 'left'):
-                matrix_obj.matrix[x][i] = matrix_obj.value
+                matrix_obj.matrix[x][i] = matrix_obj.get_value()
                 y = i
 
             elif direction in ('down', 'up'):
-                matrix_obj.matrix[i][y] = matrix_obj.value
+                matrix_obj.matrix[i][y] = matrix_obj.get_value()
                 x = i
 
             matrix_obj.inc_filled_count()
@@ -109,7 +112,7 @@ def display(m):
 
 
 def main():
-    spiral_matrix = spiral(6)
+    spiral_matrix = spiral(5)
     display(spiral_matrix)
 
 
