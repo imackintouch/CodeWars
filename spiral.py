@@ -1,5 +1,6 @@
 # ToDo: 1) See if x and y co-ordinates can be represented as a data class.
-# ToDo: 2) Create setter functions that are easy to increment
+# ToDo: 2) eliminate the need for a limit parameter
+# ToDo: 3) See if there is any way to reduce number of Matrix methods (probably not)
 
 
 def spiral(n):
@@ -13,7 +14,7 @@ def spiral(n):
             self.dirmap = {'right': 1, 'down': 1, 'left': -1, 'up': -1}
 
         def init_matrix(self, x):
-            return [[0 for i in range(x)] for i in range(x)]
+            return [[x for i in range(x)] for i in range(x)]
 
         def get_matrix(self):
             return self.matrix
@@ -39,9 +40,12 @@ def spiral(n):
         def inc_value(self, inc=1):
             self.value += inc
 
-    def traverse_spiral(matrix_obj, x, y, direction, limit):
+        def setxy_to_value(self, x, y, value):
+            self.matrix[x][y] = value
+
+    def traverse_spiral(matrix, x, y, direction, limit):
         """
-        :param matrix_obj: Matrix object to process
+        :param matrix: Matrix object to process
         :param x: starting row
         :param y: starting col
         :param direction: Direction to start filling
@@ -50,7 +54,7 @@ def spiral(n):
         """
 
         i = 0
-        dirmap = matrix_obj.get_dirmap()
+        dirmap = matrix.get_dirmap()
         accumulator = dirmap[direction]
         if direction in ('right', 'left'):
             i = y
@@ -58,35 +62,35 @@ def spiral(n):
             i = x
 
         while i != limit:
-            matrix_obj.inc_value()
+            matrix.inc_value()
 
             if direction in ('right', 'left'):
-                matrix_obj.matrix[x][i] = matrix_obj.get_value()
+                matrix.setxy_to_value(x, i, matrix.get_value())
                 y = i
 
             elif direction in ('down', 'up'):
-                matrix_obj.matrix[i][y] = matrix_obj.get_value()
+                matrix.setxy_to_value(i, y, matrix.get_value())
                 x = i
 
-            matrix_obj.inc_filled_count()
+            matrix.inc_filled_count()
             i = i + accumulator
 
         print(f"After turning {direction}: x={x}, y={y}")
-        print(f"my matrix state is currently: matrix count={matrix_obj.get_filled_count()}")
+        print(f"my matrix state is currently: matrix count={matrix.get_filled_count()}")
         return x, y
 
     x_ord, y_ord = 0, 0
-    array = Matrix(n)
-    print(f"After init: x_ord={x_ord}, y_ord={y_ord}")
-    print(f"my matrix state is currently: {array.get_matrix()}")
+    grid = Matrix(n)
     left_limit, right_limit = -1, n
     top_limit, bottom_limit = 0, n
+    print(f"After init: x_ord={x_ord}, y_ord={y_ord}")
+    print(f"my matrix state is currently: {grid.get_matrix()}")
 
-    while array.get_filled_count() < n*n:
-        x_ord, y_ord = traverse_spiral(array, x_ord, y_ord, 'right', right_limit)
-        x_ord, y_ord = traverse_spiral(array, x_ord+1, y_ord, 'down', bottom_limit)
-        x_ord, y_ord = traverse_spiral(array, x_ord, y_ord-1, 'left', left_limit)
-        x_ord, y_ord = traverse_spiral(array, x_ord-1, y_ord, 'up', top_limit)
+    while grid.get_filled_count() < n*n:
+        x_ord, y_ord = traverse_spiral(grid, x_ord, y_ord, 'right', right_limit)
+        x_ord, y_ord = traverse_spiral(grid, x_ord+1, y_ord, 'down', bottom_limit)
+        x_ord, y_ord = traverse_spiral(grid, x_ord, y_ord-1, 'left', left_limit)
+        x_ord, y_ord = traverse_spiral(grid, x_ord-1, y_ord, 'up', top_limit)
 
         y_ord += 1
         right_limit -= 1
@@ -94,7 +98,7 @@ def spiral(n):
         left_limit += 1
         top_limit += 1
 
-    return array
+    return grid
 
 
 #
