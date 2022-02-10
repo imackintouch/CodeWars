@@ -1,6 +1,5 @@
 # ToDo: 1) See if x and y co-ordinates can be represented as a data class.
-# ToDo: 2) eliminate the need for a limit parameter
-# ToDo: 3) See if there is any way to reduce number of Matrix methods (probably not)
+# ToDo: 2) eliminate the need for a limit parameter to traverse spiral
 
 
 def spiral(n):
@@ -9,7 +8,6 @@ def spiral(n):
         def __init__(self, size):
             self.size = size
             self.value = 0
-            self.filled_count = 0
             self.matrix = self.init_matrix(size)
             self.dirmap = {'right': 1, 'down': 1, 'left': -1, 'up': -1}
 
@@ -19,20 +17,11 @@ def spiral(n):
         def get_matrix(self):
             return self.matrix
 
-        def get_filled_count(self):
-            return self.filled_count
-
         def get_value(self):
             return self.value
 
         def get_dirmap(self):
             return self.dirmap
-
-        def set_filled_count(self, count):
-            self.filled_count = count
-
-        def inc_filled_count(self, inc=1):
-            self.filled_count += inc
 
         def set_value(self, value):
             self.value = value
@@ -72,11 +61,10 @@ def spiral(n):
                 matrix.setxy_to_value(i, y, matrix.get_value())
                 x = i
 
-            matrix.inc_filled_count()
             i = i + accumulator
 
         print(f"After turning {direction}: x={x}, y={y}")
-        print(f"my matrix state is currently: matrix count={matrix.get_filled_count()}")
+        print(f"my matrix state is currently: matrix value={matrix.get_value()}")
         return x, y
 
     x_ord, y_ord = 0, 0
@@ -86,7 +74,7 @@ def spiral(n):
     print(f"After init: x_ord={x_ord}, y_ord={y_ord}")
     print(f"my matrix state is currently: {grid.get_matrix()}")
 
-    while grid.get_filled_count() < n*n:
+    while grid.get_value() < n*n:
         x_ord, y_ord = traverse_spiral(grid, x_ord, y_ord, 'right', right_limit)
         x_ord, y_ord = traverse_spiral(grid, x_ord+1, y_ord, 'down', bottom_limit)
         x_ord, y_ord = traverse_spiral(grid, x_ord, y_ord-1, 'left', left_limit)
@@ -116,7 +104,7 @@ def display(m):
 
 
 def main():
-    spiral_matrix = spiral(5)
+    spiral_matrix = spiral(4)
     display(spiral_matrix)
 
 
