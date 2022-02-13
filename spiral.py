@@ -12,7 +12,7 @@ def spiral(n):
             self.dirmap = {'right': 1, 'down': 1, 'left': -1, 'up': -1}
 
         def init_matrix(self, x):
-            return [[x for i in range(x)] for i in range(x)]
+            return [[0 for i in range(x)] for i in range(x)]
 
         def get_matrix(self):
             return self.matrix
