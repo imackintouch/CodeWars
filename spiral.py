@@ -2,7 +2,7 @@
 # ToDo: 2) eliminate the need for a limit parameter to traverse spiral
 
 
-def spiral(n):
+def create_spiral(n):
     class Matrix:
 
         def __init__(self, size):
@@ -67,20 +67,20 @@ def spiral(n):
         print(f"my matrix state is currently: matrix value={matrix.get_value()}")
         return x, y
 
-    if n<0 or not isinstance(n, int):
+    if n < 0 or not isinstance(n, int):
         return []
 
-    grid = Matrix(n)
+    spiral = Matrix(n)
     left_limit, right_limit = -1, n
     top_limit, bottom_limit = 0, n
     x_ord, y_ord = 0, 0
-    print(f"my matrix state is currently: {grid.get_matrix()}")
+    print(f"my matrix state is currently: {spiral.get_matrix()}")
 
-    while grid.get_value() < n*n:
-        x_ord, y_ord = traverse_spiral(grid, x_ord, y_ord, 'right', right_limit)
-        x_ord, y_ord = traverse_spiral(grid, x_ord+1, y_ord, 'down', bottom_limit)
-        x_ord, y_ord = traverse_spiral(grid, x_ord, y_ord-1, 'left', left_limit)
-        x_ord, y_ord = traverse_spiral(grid, x_ord-1, y_ord, 'up', top_limit)
+    while spiral.get_value() < n*n:
+        x_ord, y_ord = traverse_spiral(spiral, x_ord, y_ord, 'right', right_limit)
+        x_ord, y_ord = traverse_spiral(spiral, x_ord+1, y_ord, 'down', bottom_limit)
+        x_ord, y_ord = traverse_spiral(spiral, x_ord, y_ord-1, 'left', left_limit)
+        x_ord, y_ord = traverse_spiral(spiral, x_ord-1, y_ord, 'up', top_limit)
 
         y_ord += 1
         right_limit -= 1
@@ -88,7 +88,7 @@ def spiral(n):
         left_limit += 1
         top_limit += 1
 
-    return grid.get_matrix()
+    return spiral.get_matrix()
 
 
 #
@@ -105,8 +105,7 @@ def display(m):
 
 
 def main():
-    spiral_matrix = spiral(3)
-    display(spiral_matrix)
+    display(create_spiral(7))
 
 
 if __name__ == '__main__':
