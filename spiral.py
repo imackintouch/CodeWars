@@ -67,13 +67,17 @@ def spiral(n):
         print(f"my matrix state is currently: matrix value={matrix.get_value()}")
         return x, y
 
+    if n<0 or not isinstance(n, int):
+        return []
+
     grid = Matrix(n)
     left_limit, right_limit = -1, n
     top_limit, bottom_limit = 0, n
+    x_ord, y_ord = 0, 0
     print(f"my matrix state is currently: {grid.get_matrix()}")
 
     while grid.get_value() < n*n:
-        x_ord, y_ord = traverse_spiral(grid, 0, 0, 'right', right_limit)
+        x_ord, y_ord = traverse_spiral(grid, x_ord, y_ord, 'right', right_limit)
         x_ord, y_ord = traverse_spiral(grid, x_ord+1, y_ord, 'down', bottom_limit)
         x_ord, y_ord = traverse_spiral(grid, x_ord, y_ord-1, 'left', left_limit)
         x_ord, y_ord = traverse_spiral(grid, x_ord-1, y_ord, 'up', top_limit)
@@ -84,25 +88,24 @@ def spiral(n):
         left_limit += 1
         top_limit += 1
 
-    return grid
+    return grid.get_matrix()
 
 
 #
 # Make display better formatted
 def display(m):
-    matrix = m.get_matrix()
-    if len(matrix) > 0:
-        n = len(matrix[0])
+    if len(m) > 0:
+        n = len(m[0])
         element_len = len(str(n * n))
         for i in range(n):
             for j in range(n):
-                print(f"{matrix[i][j]:>{element_len}}", end=" ")
+                print(f"{m[i][j]:>{element_len}}", end=" ")
                 if j == (n-1):
                     print()
 
 
 def main():
-    spiral_matrix = spiral(4)
+    spiral_matrix = spiral(3)
     display(spiral_matrix)
 
 
