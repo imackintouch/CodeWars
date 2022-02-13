@@ -67,7 +67,9 @@ def create_spiral(n):
         print(f"my matrix state is currently: matrix value={matrix.get_value()}")
         return x, y
 
-    if n < 0 or not isinstance(n, int):
+    if not isinstance(n, int):
+        return []
+    if n < 0:
         return []
 
     spiral = Matrix(n)
@@ -105,7 +107,7 @@ def display(m):
 
 
 def main():
-    display(create_spiral(7))
+    display(create_spiral(5))
 
 
 if __name__ == '__main__':
