@@ -61,21 +61,19 @@ def spiral(n):
                 matrix.setxy_to_value(i, y, matrix.get_value())
                 x = i
 
-            i = i + accumulator
+            i += accumulator
 
         print(f"After turning {direction}: x={x}, y={y}")
         print(f"my matrix state is currently: matrix value={matrix.get_value()}")
         return x, y
 
-    x_ord, y_ord = 0, 0
     grid = Matrix(n)
     left_limit, right_limit = -1, n
     top_limit, bottom_limit = 0, n
-    print(f"After init: x_ord={x_ord}, y_ord={y_ord}")
     print(f"my matrix state is currently: {grid.get_matrix()}")
 
     while grid.get_value() < n*n:
-        x_ord, y_ord = traverse_spiral(grid, x_ord, y_ord, 'right', right_limit)
+        x_ord, y_ord = traverse_spiral(grid, 0, 0, 'right', right_limit)
         x_ord, y_ord = traverse_spiral(grid, x_ord+1, y_ord, 'down', bottom_limit)
         x_ord, y_ord = traverse_spiral(grid, x_ord, y_ord-1, 'left', left_limit)
         x_ord, y_ord = traverse_spiral(grid, x_ord-1, y_ord, 'up', top_limit)
